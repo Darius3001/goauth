@@ -1,24 +1,25 @@
 package userauth
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	// "golang.org/x/crypto/bcrypt"
+	"golang.org/x/crypto/bcrypt"
+	"openpager.com/m/database"
 )
 
 type registrationRequest struct {
-	Name 			string `json:"username"`
-	Email 		string `json:"email"`
-	Password 	string `json:"password"`
+	Name     string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func handleRegistration(w http.ResponseWriter, r *http.Request) {
 
 	var registrationRequest registrationRequest
 
-	decoder := json.NewDecoder(r.Body)	
+	decoder := json.NewDecoder(r.Body)
 
 	err := decoder.Decode(&registrationRequest)
 	if err != nil {
@@ -26,7 +27,27 @@ func handleRegistration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword(
+		[]byte(registrationRequest.Password),
+		bcrypt.DefaultCost)
 
-	fmt.Println(registrationRequest)
+	if err != nil {
+		http.Error(w, "Failed to hash password", http.StatusInternalServerError)
+	}
+
+	err = database.ExecuteQuery(func(db *sql.DB) error {
+		_, err := db.Query(fmt.Sprintf(`
+			INSERT INTO users (username, email, password_hash)
+			VALUES ('%s', '%s', '%s')
+		`, registrationRequest.Name, registrationRequest.Email, hashedPassword))
+		return err
+	})
+
+	if err != nil {
+		http.Error(w, "Error inserting to database", http.StatusInternalServerError)
+		fmt.Println("WARNING: ", err)
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
 }
