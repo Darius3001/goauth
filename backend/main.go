@@ -1,14 +1,22 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
-	"database/sql"
+
+	"openpager.com/m/database"
 )
 
 func main() {
+	dbSetupErr := database.SetupDatabase()
+	if dbSetupErr != nil {
+		return
+	}
 
-	err := executeQuery(func(db *sql.DB) error {
+
+
+	err := database.ExecuteQuery(func(db *sql.DB) error {
 		
 		rows, err := db.Query("SHOW TABLES")
 
@@ -32,7 +40,6 @@ func main() {
 		fmt.Println(err)
 	}
 
-	fmt.Println()
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 
 		responseString := "HIIIIII"
