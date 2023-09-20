@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"openpager.com/m/database"
+	"openpager.com/m/userauth"
 )
 
 func main() {
@@ -14,15 +15,13 @@ func main() {
 		return
 	}
 
-
-
 	err := database.ExecuteQuery(func(db *sql.DB) error {
-		
+
 		rows, err := db.Query("SHOW TABLES")
 
 		if err != nil {
 			return err
-		}			
+		}
 		defer rows.Close()
 
 		fmt.Println("Tables in Database")
@@ -40,21 +39,6 @@ func main() {
 		fmt.Println(err)
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-
-		responseString := "HIIIIII"
-
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-
-		_, err := w.Write([]byte(responseString))
-
-		if err != nil {
-			http.Error(w, "Error writing response", http.StatusInternalServerError)
-			return
-		}
-	})
-
-	http.Handle("/auth", createAuthRoute())	
-
+	http.Handle("/", userauth.CreateAuthRoutes())
 	http.ListenAndServe(":8080", nil)
 }
