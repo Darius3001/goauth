@@ -33,8 +33,11 @@ func handleRegistration(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Failed to hash password", http.StatusInternalServerError)
+		return
 	}
-
+	
+	//TODO email verification
+	//TODO better error on duplicate email
 	err = database.ExecuteQuery(func(db *sql.DB) error {
 		_, err := db.Query(fmt.Sprintf(`
 			INSERT INTO users (username, email, password_hash)

@@ -55,7 +55,7 @@ func createTablesIfNotExists(db *sql.DB) error {
 	CREATE TABLE IF NOT EXISTS users (
 			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			username VARCHAR(30) NOT NULL,
-			email VARCHAR(255) NOT NULL,
+			email VARCHAR(255) NOT NULL UNIQUE,
 			password_hash VARCHAR(60) NOT NULL,
 			CONSTRAINT username_min_len_3 CHECK (
 				CHAR_LENGTH(username) >= 3 

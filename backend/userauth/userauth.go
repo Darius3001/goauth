@@ -12,9 +12,9 @@ func CreateAuthRoutes() *mux.Router {
 
 	router.Use(jsonMiddleware)
 	
-	router.HandleFunc("/login", func (w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)	
-	})
+	router.
+		HandleFunc("/login", handleLogin).
+		Methods("POST")
 
 	router.
 		HandleFunc("/register", handleRegistration).
