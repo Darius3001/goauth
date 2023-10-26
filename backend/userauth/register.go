@@ -9,12 +9,6 @@ import (
 	"openpager.com/m/database"
 )
 
-type registrationRequest struct {
-	Name     string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 func handleRegistration(w http.ResponseWriter, r *http.Request) {
 
 	var registrationRequest registrationRequest

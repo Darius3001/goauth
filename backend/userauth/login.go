@@ -8,11 +8,6 @@ import (
 	"openpager.com/m/database"
 )
 
-type loginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 func handleLogin(w http.ResponseWriter, r *http.Request) {
 	var loginRequest loginRequest
 
