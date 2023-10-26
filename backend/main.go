@@ -10,10 +10,10 @@ import (
 )
 
 func main() {
-	dbSetupErr := database.SetupDatabase()
-	if dbSetupErr != nil {
-		return
-	}
+	//dbSetupErr := database.SetupDatabase()
+	//if dbSetupErr != nil {
+	//return
+	//}
 
 	err := database.ExecuteQuery(func(db *sql.DB) error {
 
@@ -39,6 +39,7 @@ func main() {
 		fmt.Println(err)
 	}
 
+	http.HandleFunc("/testdb", database.TestDataBaseRoute)
 	http.Handle("/", userauth.CreateAuthRoutes())
 	http.ListenAndServe(":8080", nil)
 }

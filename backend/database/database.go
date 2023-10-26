@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,7 +12,7 @@ import (
 const (
 	dbUserName = "goserver"
 	dbPassword = "thisisunsafe"
-	dbHost     = "localhost"
+	dbHost     = "openpager_mysql"
 	dbPort     = "3306"
 	dbName     = "openpager"
 )
@@ -23,6 +24,17 @@ var dbUrl = fmt.Sprintf(
 	dbHost,
 	dbPort,
 	dbName)
+
+func TestDataBaseRoute(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("TESTROUTE")
+	_, err := sql.Open("mysql", dbUrl)
+	if err != nil {
+		http.Error(w, "Database not connected.", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
 
 func ExecuteQuery(queryFunc func(*sql.DB) error) error {
 	db, err := sql.Open("mysql", dbUrl)
@@ -47,7 +59,7 @@ func SetupDatabase() error {
 
 	err = createTablesIfNotExists(db)
 
-	return nil
+	return err
 }
 
 func createTablesIfNotExists(db *sql.DB) error {

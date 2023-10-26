@@ -1,15 +1,19 @@
 version: '3'
 services:
   backend:
+    container_name: openpager_go_app
     build:
       context: backend
-      dockerfile: backend/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
       - db
+    networks:
+        - openpagernetwork
   db:
     image: mysql:8.0
+    container_name: openpager_mysql
     environment:
       MYSQL_ROOT_PASSWORD: thisisunsafe
       MYSQL_DATABASE: openpager 
@@ -17,3 +21,7 @@ services:
       MYSQL_PASSWORD: thisisunsafe
     ports:
       - "3306:3306"
+    networks:
+        - openpagernetwork
+networks:
+  openpagernetwork:
