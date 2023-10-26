@@ -10,10 +10,13 @@ import (
 )
 
 func main() {
-	//dbSetupErr := database.SetupDatabase()
-	//if dbSetupErr != nil {
-	//return
-	//}
+	database.WaitForDatabase()
+
+	dbSetupErr := database.SetupDatabase()
+
+	if dbSetupErr != nil {
+		return
+	}
 
 	err := database.ExecuteQuery(func(db *sql.DB) error {
 

@@ -3,10 +3,10 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
-
-	_ "github.com/go-sql-driver/mysql"
+	"time"
 )
 
 const (
@@ -24,6 +24,31 @@ var dbUrl = fmt.Sprintf(
 	dbHost,
 	dbPort,
 	dbName)
+
+func WaitForDatabase() {
+	maxTries := 15
+	retryInterval := 3 * time.Second
+
+	for try := 0; try < maxTries; try++ {
+
+		db, err := sql.Open("mysql", dbUrl)
+
+		if err != nil {
+			log.Println("Could not open Database")
+			time.Sleep(retryInterval)
+			continue
+		}
+
+		if err := db.Ping(); err == nil {
+			log.Println("Successfully pinged Database")
+			return
+		}
+		log.Printf("Could not ping Database: Try %d\n", try)
+		time.Sleep(retryInterval)
+	}
+
+	log.Fatalf("Database could not be reached after %d tries", maxTries)
+}
 
 func TestDataBaseRoute(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("TESTROUTE")
