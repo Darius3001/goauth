@@ -8,5 +8,4 @@ const jwt-secret = []byte("myunsafesecret")
 
 func generateToken(userId int) {
 
-   
 }
