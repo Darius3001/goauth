@@ -61,12 +61,22 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		userId, err := GetUserIdAndValidateToken(*extracedToken)
+		claims, err := ValidateToken(*extracedToken)
 
 		if err != nil {
 			http.Error(w, "JWT not valid", http.StatusUnauthorized)
 			return
 		}
+
+		//TODO: claims["expirationDate"]
+
+		userIdClaim, ok := claims["userId"].(float64)
+		if !ok {
+			http.Error(w, "userId format not valid", http.StatusUnauthorized)
+			return
+		}
+
+		userId := int(userIdClaim)
 
 		ctx := context.WithValue(r.Context(), "userId", userId)
 

@@ -1,7 +1,6 @@
 package userauth
 
 import (
-	"errors"
 	"log"
 	"time"
 
@@ -30,21 +29,7 @@ func GenerateToken(userId int) string {
 	return signedToken
 }
 
-func GetUserIdAndValidateToken(tokenString string) (int, error) {
-
-	claims, err := validateSignature(tokenString)
-	if err != nil {
-		return -1, err
-	}
-
-	userId, ok := claims["userId"].(float64)
-	if !ok {
-		return -1, errors.New("Invalid user ID claim")
-	}
-	return int(userId), nil
-}
-
-func validateSignature(tokenString string) (jwt.MapClaims, error) {
+func ValidateToken(tokenString string) (jwt.MapClaims, error) {
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return jwt_secret, nil
