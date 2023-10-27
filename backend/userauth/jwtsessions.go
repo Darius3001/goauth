@@ -1,9 +1,11 @@
 package userauth
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"errors"
 	"log"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 var jwt_secret = []byte("myunsafesecret")
@@ -28,13 +30,18 @@ func GenerateToken(userId int) string {
 	return signedToken
 }
 
-func GetUserIdAndValidateToken(tokenString string) (string, error) {
+func GetUserIdAndValidateToken(tokenString string) (int, error) {
 
 	claims, err := validateSignature(tokenString)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
-	return claims["userId"].(string), nil
+
+	userId, ok := claims["userId"].(float64)
+	if !ok {
+		return -1, errors.New("Invalid user ID claim")
+	}
+	return int(userId), nil
 }
 
 func validateSignature(tokenString string) (jwt.MapClaims, error) {
