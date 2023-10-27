@@ -5,13 +5,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
 	"golang.org/x/crypto/bcrypt"
 	"openpager.com/m/database"
+	userauth "openpager.com/m/userauth/model"
 )
 
 func handleRegistration(w http.ResponseWriter, r *http.Request) {
 
-	var registrationRequest registrationRequest
+	var registrationRequest userauth.RegistrationRequest
 
 	decoder := json.NewDecoder(r.Body)
 
@@ -29,7 +31,7 @@ func handleRegistration(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to hash password", http.StatusInternalServerError)
 		return
 	}
-	
+
 	//TODO email verification
 	//TODO better error on duplicate email
 	err = database.ExecuteQuery(func(db *sql.DB) error {

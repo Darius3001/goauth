@@ -1,11 +1,30 @@
 package userauth
 
 import (
-  "go get github.com/dgrijalva/jwt-go"
-) 
+	"log"
+	"time"
 
-const jwt-secret = []byte("myunsafesecret")
+	"github.com/dgrijalva/jwt-go"
+)
 
-func generateToken(userId int) {
+var jwt_secret []byte = []byte("myunsafesecret")
 
+func generateToken(userId int) string {
+
+	validityDuration := time.Hour * 4
+
+	token := jwt.New(jwt.SigningMethodHS256)
+
+	token.Claims = jwt.MapClaims{
+		"userId":         userId,
+		"expirationDate": time.Now().Add(validityDuration).Unix(),
+	}
+
+	signedToken, err := token.SignedString(jwt_secret)
+
+	if err != nil {
+		log.Fatalf("Error on generating jwt. %s", err)
+	}
+
+	return signedToken
 }

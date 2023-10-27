@@ -4,12 +4,14 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+
 	"golang.org/x/crypto/bcrypt"
 	"openpager.com/m/database"
+	userauth "openpager.com/m/userauth/model"
 )
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
-	var loginRequest loginRequest
+	var loginRequest userauth.LoginRequest
 
 	decoder := json.NewDecoder(r.Body)
 
