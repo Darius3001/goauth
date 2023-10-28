@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -68,17 +69,14 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		//TODO: claims["expirationDate"]
-
-		userIdClaim, ok := claims["userId"].(float64)
-		if !ok {
-			http.Error(w, "userId format not valid", http.StatusUnauthorized)
+		if time.Now().After(claims.ExpirationDate) {
+			http.Error(w, "JWT expired", http.StatusUnauthorized)
 			return
 		}
 
-		userId := int(userIdClaim)
+		//TODO: verify userId exists
 
-		ctx := context.WithValue(r.Context(), "userId", userId)
+		ctx := context.WithValue(r.Context(), "userId", claims.UserId)
 
 		r = r.WithContext(ctx)
 
