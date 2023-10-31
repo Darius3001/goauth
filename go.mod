@@ -1,4 +1,4 @@
-module openpager.com/m
+module goauth.com/m
 
 go 1.18
 

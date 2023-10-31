@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"goauth.com/m/database"
+	userauth "goauth.com/m/userauth/model"
 	"golang.org/x/crypto/bcrypt"
-	"openpager.com/m/database"
-	userauth "openpager.com/m/userauth/model"
 )
 
 func handleRegistration(w http.ResponseWriter, r *http.Request) {

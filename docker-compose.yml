@@ -16,7 +16,7 @@ services:
     container_name: goauth_mysql
     environment:
       MYSQL_ROOT_PASSWORD: thisisunsafe
-      MYSQL_DATABASE: openpager 
+      MYSQL_DATABASE: goauth 
       MYSQL_USER: goserver
       MYSQL_PASSWORD: thisisunsafe
     ports:

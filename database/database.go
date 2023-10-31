@@ -14,7 +14,7 @@ const (
 	dbPassword = "thisisunsafe"
 	dbHost     = "goauth_mysql"
 	dbPort     = "3306"
-	dbName     = "openpager"
+	dbName     = "goauth"
 )
 
 var dbUrl = fmt.Sprintf(

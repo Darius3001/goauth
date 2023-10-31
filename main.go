@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"openpager.com/m/database"
-	"openpager.com/m/userauth"
+	"goauth.com/m/database"
+	"goauth.com/m/userauth"
 )
 
 func main() {

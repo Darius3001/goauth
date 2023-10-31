@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	userauth "openpager.com/m/userauth/model"
+	userauth "goauth.com/m/userauth/model"
 )
 
 var jwt_secret = []byte("myunsafesecret")

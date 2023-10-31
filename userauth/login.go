@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
-	"openpager.com/m/database"
-	userauth "openpager.com/m/userauth/model"
+	"goauth.com/m/database"
+	userauth "goauth.com/m/userauth/model"
 )
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
