@@ -1,7 +1,7 @@
 version: '3'
 services:
   backend:
-    container_name: openpager_go_app
+    container_name: goauth_app
     build:
       context: api
       dockerfile: Dockerfile
@@ -10,10 +10,10 @@ services:
     depends_on:
       - db
     networks:
-        - openpagernetwork
+        - goauthnetwork
   db:
     image: mysql:8.0
-    container_name: openpager_mysql
+    container_name: goauth_mysql
     environment:
       MYSQL_ROOT_PASSWORD: thisisunsafe
       MYSQL_DATABASE: openpager 
@@ -22,6 +22,6 @@ services:
     ports:
       - "3306:3306"
     networks:
-        - openpagernetwork
+        - goauthnetwork
 networks:
-  openpagernetwork:
+  goauthnetwork:

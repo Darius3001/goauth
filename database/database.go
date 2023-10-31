@@ -12,7 +12,7 @@ import (
 const (
 	dbUserName = "goserver"
 	dbPassword = "thisisunsafe"
-	dbHost     = "openpager_mysql"
+	dbHost     = "goauth_mysql"
 	dbPort     = "3306"
 	dbName     = "openpager"
 )

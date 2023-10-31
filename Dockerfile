@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN go build -o openpager
+RUN go build -o goauth
 
 EXPOSE 8080
 
-CMD ["./openpager"]
+CMD ["./goauth"]
